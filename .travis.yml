@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t yp268/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true yp268/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t yp268/multi-client ./client
+  - docker build -t yp268/multi-nginx ./nginx
+  - docker build -t yp268/multi-server ./server
+  - docker build -t yp268/multi-worker ./worker
+
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+  - docker push yp268/multi-client
+  - docker push yp268/multi-nginx
+  - docker push yp268/multi-server
+  - docker push yp268/multi-worker
