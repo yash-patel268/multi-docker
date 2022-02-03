@@ -11,5 +11,6 @@ This project was design to run of Amazon Web Services (AWS) using the following 
 - S3
 - IAM
 
-
+## Testing
+This project was tested and deployed with Travis CI.
 
